@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | TECHNOVA{% endblock %}
+
+{% block content %}
+<section class="section">
+    <p class="eyebrow">EVENT OPERATIONS</p>
+    <h1>Admin <span>Dashboard</span></h1>
+    <p class="section-description">
+        Monitor registrations and manage participant records.
+    </p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <strong>{{ total }}</strong>
+            <span>Total participants</span>
+        </div>
+        <div class="stat-card">
+            <strong>{{ registered }}</strong>
+            <span>Registered</span>
+        </div>
+        <div class="stat-card">
+            <strong>{{ attended }}</strong>
+            <span>Attended</span>
+        </div>
+    </div>
+</section>
+
+<section class="section dashboard-section">
+    <h2>Event <span>Summary</span></h2>
+
+    <div class="event-summary-list">
+        {% for item in event_stats %}
+        <div class="event-summary-row">
+            <span>{{ item['event'] }}</span>
+            <strong>{{ item['count'] }} registrations</strong>
+        </div>
+        {% else %}
+        <p>No registrations yet. Register a student to see the summary.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section dashboard-section">
+    <h2>Manage <span>Participants</span></h2>
+
+    <form class="search-form" method="GET" action="{{ url_for('admin') }}">
+        <input type="search" name="q" value="{{ search }}"
+               placeholder="Search name, email, department or event">
+
+        <select name="status">
+            <option value="">All statuses</option>
+            {% for option in ['Registered', 'Attended', 'Cancelled'] %}
+            <option value="{{ option }}"
+                {% if status_filter == option %}selected{% endif %}>
+                {{ option }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <button class="button button-primary" type="submit">Search</button>
+        <a class="button button-secondary" href="{{ url_for('admin') }}">
+            Clear
+        </a>
+    </form>
+
+    <div class="table-wrap">
+        <table class="registration-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Event</th>
+                    <th>Status</th>
+                    <th>Update status</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for participant in registrations %}
+                <tr>
+                    <td>{{ participant['name'] }}</td>
+                    <td>{{ participant['email'] }}</td>
+                    <td>{{ participant['department'] }}</td>
+                    <td>{{ participant['year'] }}</td>
+                    <td>{{ participant['event'] }}</td>
+                    <td>
+                        <span class="status-pill">
+                            {{ participant['status'] }}
+                        </span>
+                    </td>
+                    <td>
+                        <form method="POST"
+                              action="{{ url_for('update_status', registration_id=participant['id']) }}"
+                              class="inline-form">
+                            <select name="status" aria-label="New status">
+                                {% for option in ['Registered', 'Attended', 'Cancelled'] %}
+                                <option value="{{ option }}"
+                                    {% if participant['status'] == option %}selected{% endif %}>
+                                    {{ option }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <button class="small-button" type="submit">
+                                Save
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST"
+                              action="{{ url_for('delete_registration', registration_id=participant['id']) }}"
+                              onsubmit="return confirm('Delete this registration?');">
+                            <button class="small-button danger" type="submit">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8">No matching registrations found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

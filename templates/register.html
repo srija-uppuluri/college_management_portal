@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Student Registration | TECHNOVA{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <p class="eyebrow">JOIN THE FEST</p>
+    <h1>Student <span>Registration</span></h1>
+    <p class="section-description">
+        Complete the form to register for a TECHNOVA event.
+    </p>
+
+    <form class="portal-form" method="POST" action="{{ url_for('register') }}">
+        <label for="name">Full name</label>
+        <input id="name" name="name" type="text"
+               maxlength="100" required placeholder="Enter your full name">
+
+        <label for="email">Email address</label>
+        <input id="email" name="email" type="email"
+               maxlength="254" required placeholder="you@example.com">
+
+        <label for="department">Department</label>
+        <select id="department" name="department" required>
+            <option value="">Choose your department</option>
+            <option>Computer Science</option>
+            <option>Information Technology</option>
+            <option>Electronics</option>
+            <option>Mechanical</option>
+            <option>Electrical</option>
+            <option>Other</option>
+        </select>
+
+        <label for="year">Year of study</label>
+        <select id="year" name="year" required>
+            <option value="">Choose your year</option>
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+        </select>
+
+        <label for="event">Select event</label>
+        <select id="event" name="event" required>
+            <option value="">Choose an event</option>
+            {% for event in events %}
+            <option value="{{ event }}"
+                {% if request.args.get('event') == event %}selected{% endif %}>
+                {{ event }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <button class="button button-primary" type="submit">
+            Submit Registration
+        </button>
+    </form>
+</section>
+{% endblock %}

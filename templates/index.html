@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Home | TECHNOVA Portal{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+
+        <h1>Discover. Innovate. Participate.</h1>
+
+        <p>
+            Welcome to TECHNOVA, your college events portal.
+            Discover technical events, showcase your skills,
+            collaborate with fellow students, and turn your ideas
+            into innovative solutions.
+        </p>
+
+        <div class="hero-actions">
+            <a href="{{ url_for('register') }}" class="btn btn-primary">
+                Register for an Event
+            </a>
+
+            <a href="#events" class="btn btn-secondary">
+                Explore Events
+            </a>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- Statistics Section -->
+<section class="stats-grid">
+
+    <div class="stat-card">
+        <p>Total Registrations</p>
+        <h2>{{ total }}</h2>
+        <span class="stat-label">Student registrations</span>
+    </div>
+
+    <div class="stat-card">
+        <p>Events with Registrations</p>
+        <h2>{{ event_counts }}</h2>
+        <span class="stat-label">Events attracting participants</span>
+    </div>
+
+    <div class="stat-card">
+        <p>Available Events</p>
+        <h2>{{ events|length }}</h2>
+        <span class="stat-label">Opportunities to participate</span>
+    </div>
+
+</section>
+
+
+<!-- Events Section -->
+<section class="section" id="events">
+
+    <div class="section-heading">
+        <div>
+            <h2>Explore Our Events</h2>
+            <p>Find an opportunity to learn, build, and innovate.</p>
+        </div>
+    </div>
+
+    <div class="event-grid">
+
+        {% for event in events %}
+
+        <article class="event-card">
+
+            <span class="event-tag">TECHNOVA EVENT</span>
+
+            <h3>{{ event|title }}</h3>
+
+            {% if event == "code sprints" %}
+
+                <p>
+                    Strengthen your programming skills by solving
+                    coding challenges and algorithmic problems.
+                </p>
+
+            {% elif event == "AI hackathon" %}
+
+                <p>
+                    Explore artificial intelligence and collaborate
+                    to build innovative solutions.
+                </p>
+
+            {% elif event == "web creation" %}
+
+                <p>
+                    Design and develop engaging websites using
+                    modern web technologies.
+                </p>
+
+            {% elif event == "cyber security seminars" %}
+
+                <p>
+                    Learn about cybersecurity, digital safety,
+                    and emerging security challenges.
+                </p>
+
+            {% elif event == "robotics competition" %}
+
+                <p>
+                    Apply engineering concepts to robotics,
+                    automation, and hands-on problem-solving.
+                </p>
+
+            {% endif %}
+
+            <a href="{{ url_for('register') }}" class="btn btn-primary">
+                Register Now
+            </a>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+
+<!-- Why Participate Section -->
+<section class="section">
+
+    <div class="section-heading">
+        <div>
+            <h2>Why Participate?</h2>
+            <p>Make your college experience more meaningful.</p>
+        </div>
+    </div>
+
+    <div class="card-grid">
+
+        <div class="card">
+            <h3>Build Practical Skills</h3>
+            <p>
+                Apply classroom knowledge to real-world challenges
+                and strengthen your technical abilities.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Collaborate and Connect</h3>
+            <p>
+                Work with fellow students, exchange ideas,
+                and develop teamwork skills.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Explore New Technologies</h3>
+            <p>
+                Discover emerging technologies and experiment
+                with creative approaches to problem-solving.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3>Showcase Your Talent</h3>
+            <p>
+                Participate in competitions and demonstrate
+                your creativity, knowledge, and innovation.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Final Call to Action -->
+<section class="section card">
+
+    <h2>Ready to Get Started?</h2>
+
+    <p>
+        Choose an event, complete your registration,
+        and take the next step in your technical journey.
+    </p>
+
+    <a href="{{ url_for('register') }}" class="btn btn-primary">
+        Register Today
+    </a>
+
+</section>
+
+{% endblock %}
